@@ -5638,3 +5638,35 @@ function wp_cache_get_last_changed( $group ) {
 
 	return $last_changed;
 }
+
+function remove_menus () {
+    global $menu;
+    // unset($menu[2]);  // ダッシュボード
+    // unset($menu[4]);  // メニューの線1
+    // unset($menu[5]);  // 投稿
+    // unset($menu[10]); // メディア
+    // unset($menu[15]); // リンク
+    // unset($menu[20]); // ページ
+    unset($menu[25]); // コメント
+    // unset($menu[59]); // メニューの線2
+    unset($menu[60]); // テーマ
+    unset($menu[65]); // プラグイン
+    // unset($menu[70]); // プロフィール
+    unset($menu[75]); // ツール
+    unset($menu[80]); // 設定
+    // unset($menu[90]); // メニューの線3
+}
+add_action('admin_menu', 'remove_menus');
+ 
+// function artist_add_pages () {
+//   add_menu_page('テストタイトル', 'アーティスト', 7, 'index2.php', 'test_page', null, 5);
+//   add_submenu_page('index2.php', 'テストタイトルサブ', 'kubota', 7, 'index3.php', 'test_page');
+//   add_submenu_page('index2.php', 'テストタイトルサブ', 'urashima', 7, 'index3.php', 'test_page');
+//   add_submenu_page('index2.php', 'テストタイトルサブ', 'mori', 7, 'index3.php', 'test_page');
+//   add_submenu_page('index2.php', 'テストタイトルサブ', 'bse', 7, 'index3.php', 'test_page');
+// }
+ 
+// function test_page() {
+//     echo '<h2>メニュー追加テストページ</h2>';
+// }
+// add_action ( 'admin_menu', 'artist_add_pages' );
