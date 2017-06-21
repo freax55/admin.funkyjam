@@ -5650,10 +5650,10 @@ function remove_menus () {
     unset($menu[25]); // コメント
     // unset($menu[59]); // メニューの線2
     unset($menu[60]); // テーマ
-    unset($menu[65]); // プラグイン
+    // unset($menu[65]); // プラグイン
     // unset($menu[70]); // プロフィール
     unset($menu[75]); // ツール
-    unset($menu[80]); // 設定
+    // unset($menu[80]); // 設定
     // unset($menu[90]); // メニューの線3
 }
 add_action('admin_menu', 'remove_menus');
@@ -5670,3 +5670,18 @@ add_action('admin_menu', 'remove_menus');
 //     echo '<h2>メニュー追加テストページ</h2>';
 // }
 // add_action ( 'admin_menu', 'artist_add_pages' );
+
+
+
+// function fj_news_sort() {
+// 	add_menu_page('トップページニュース並び替え', 'sort_news(top)', 7, 'sort_news.php', 'sort_news_top', null, 2000);
+
+// }
+
+// function sort_news_top() {
+// 	echo '<h2>トップページニュース並び替え</h2>';
+// }
+// add_action('admin_menu', 'fj_news_sort');
+
+
+
