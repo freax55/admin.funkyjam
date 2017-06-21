@@ -44,6 +44,7 @@ function get_news_id_list() {
 	// $n = var_dump($news_temrs);
 	// $news_terms = array(4,8,12,16);
 	$where_in = implode(',', $news_terms);
+	// $order_option = $wpdb->get_col("SELECT `Option`")
 	$news_ids = $wpdb->get_col("SELECT `TermRelationship`.`object_id` FROM `wp_funkyjam`.`wp_term_relationships` AS `TermRelationship` WHERE `TermRelationship`.`term_taxonomy_id` IN ($where_in)");
 
 	// $news_ids = $wpdb->get_col($wpdb->prepare("SELECT `TermRelationship`.`object_id` FROM `wp_funkyjam`.`wp_term_relationships` AS `TermRelationship` WHERE `TermRelationship`.`term_taxonomy_id` IN (%s)", $news_terms));
@@ -58,15 +59,17 @@ function get_news_id_list() {
 
 
 function sort_news_top() {
-	echo '<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>';
-	echo '<script src="http://code.jquery.com/ui/1.11.3/jquery-ui.js"></script>';
+	echo '<script src="https://code.jquery.com/jquery-1.8.3.min.js"></script>';
+	echo '<script src="https://code.jquery.com/ui/1.11.3/jquery-ui.js"></script>';
 	echo '<script>
-		$(function() {
-			$(".sortable").sortable();
-			$(".sortable").disableSelection();
-			$("#submit").click(function() {
-				var result = $(".sortable").sortable("toArray");
-				$("#result").val(result);
+		jQuery(function($){
+			$(function() {
+				$(".sortable").sortable();
+				$(".sortable").disableSelection();
+				$("#submit").click(function() {
+					var result = $(".sortable").sortable("toArray");
+					$("#result").val(result);
+				});
 			});
 		});
 	</script>';
