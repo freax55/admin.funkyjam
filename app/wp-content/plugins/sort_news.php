@@ -41,9 +41,11 @@ function get_news_terms(){
 function get_news_id_list() {
 	global $wpdb;
 	$news_terms = $wpdb->get_col("SELECT `Term`.`term_id` FROM `wp_funkyjam`.`wp_terms` AS `Term` WHERE `Term`.`name` LIKE '%news'");
-	// $n = var_dump($news_temrs);
+	// $n = 
+	var_dump($news_terms);
 	// $news_terms = array(4,8,12,16);
 	$where_in = implode(',', $news_terms);
+	var_dump($where_in);
 	// $order_option = $wpdb->get_col("SELECT `Option`")
 	$news_ids = $wpdb->get_col("SELECT `TermRelationship`.`object_id` FROM `wp_funkyjam`.`wp_term_relationships` AS `TermRelationship` WHERE `TermRelationship`.`term_taxonomy_id` IN ($where_in)");
 
