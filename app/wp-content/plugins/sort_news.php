@@ -19,13 +19,46 @@ Author:      y.yoshida
 // add_action ( 'admin_menu', 'artist_add_pages' );
 // var $wpdb = global $wpdb;
 
-if (isset($_POST['result'])){
-	print_r($_POST['result']);
-	// $ids = 
+if (isset($_POST['sort'])){
+	$n = (empty($_POST['sort']['limit']))?12:$_POST['sort']['limit'];
 
+	$array_result_ids = explode(',', $_POST['sort']['result']);
+	$i = 0;
+	foreach($array_result_ids as $v){
+		if($i == $n){
+			break;
+		}
+		$ary_update[] = $v;
+		$i++;
+	}
+	$json_update = json_encode($ary_update);
+	global $wpdb;
+	$custom_order_exist_id = $wpdb->get_col("SELECT option_id FROM wp_options WHERE option_name = 'custom_order'");
+	if($custom_order_exist_id == null) {
+		$wpdb->insert(
+			'wp_options',
+			array(
+				'option_name' => 'custom_order',
+				'option_value' => $json_update,
+				'autoload' => 'no'
+			)
+		);
+		echo '1';
+	} else {
+		$order_option_id = $custom_order_exist_id[0];
+		$wpdb->update(
+			'wp_options',
+			array(
+				'option_value' => $json_update,
+			),
+			array(
+				'option_id' => $order_option_id,
+			)
+		);
+		echo '0';
+		$wpdb->print_error();	
+	}
 }
-
-
 
 function fj_news_sort() {
 	add_menu_page('トップページニュース並び替え', 'sort_news(top)', 7, 'sort_news.php', 'sort_news_top', null, 2000);
@@ -33,34 +66,21 @@ function fj_news_sort() {
 }
 
 function get_news_terms(){
-	// $wpdb = $this->wpdb;
 	global $wpdb;
 	return $wpdb->get_col("SELECT `Term`.`term_id` FROM `wp_funkyjam`.`wp_terms` AS `Term` WHERE `Term`.`name` LIKE '%news'");
 }
 
 function get_news_id_list() {
 	global $wpdb;
-	// $news_terms = $wpdb->get_col("SELECT `Term`.`term_id` FROM `wp_funkyjam`.`wp_terms` AS `Term` WHERE `Term`.`name` LIKE '%news'");
 	$news_terms = $wpdb->get_col("SELECT term_id FROM wp_terms WHERE name LIKE '%news'");
-	
-	// $n = 
-	var_dump($news_terms);
-	// $news_terms = array(4,8,12,16);
 	$where_in = implode(',', $news_terms);
-	var_dump($where_in);
-	// $order_option = $wpdb->get_col("SELECT `Option`")
-	$news_ids = $wpdb->get_col("SELECT object_id FROM wp_term_relationships WHERE term_taxonomy_id IN ($where_in)");
-
-	// $news_ids = $wpdb->get_col($wpdb->prepare("SELECT `TermRelationship`.`object_id` FROM `wp_funkyjam`.`wp_term_relationships` AS `TermRelationship` WHERE `TermRelationship`.`term_taxonomy_id` IN (%s)", $news_terms));
-	// $inClause = substr(str_repeat(',?', count($news_terms)), 1);
-	// $news_ids = $wpdb->get_col($wpdb->prepare(sprintf("SELECT `TermRelationship`.`object_id` FROM `wp_funkyjam`.`wp_term_relationships` AS `TermRelationship` WHERE `TermRelationship`.`term_taxonomy_id` IN (%s)", $inClause), $news_terms));
-
+	$news_ids = $wpdb->get_results("SELECT object_id , term_taxonomy_id FROM wp_term_relationships WHERE term_taxonomy_id IN ($where_in) ORDER BY object_id DESC",ARRAY_A);
 	return $news_ids;
  }
 
- // function 
-
-
+ function get_artist_by_taxonomy() {
+ 	return array(4=>'久保田利伸', 8=>'浦島りんこ', 12=>'森大輔', 16=>'BES');
+ }
 
 function sort_news_top() {
 	echo '<script src="https://code.jquery.com/jquery-1.8.3.min.js"></script>';
@@ -79,31 +99,37 @@ function sort_news_top() {
 	</script>';
 	global $wpdb;
 	echo '<h2>トップページニュース並び替え</h2>';
-	if (isset($_POST['sort'])){
-		var_dump($_POST['sort']);
+	$_news_ids = get_news_id_list();
+	foreach($_news_ids as $v) {
+		$news_ids[] = $v['object_id'];
+		$ids_by_artist[$v['object_id']] = $v['term_taxonomy_id'];
 	}
-
-	// echo get_news_terms();
-	// var_dump(get_news_terms());
-	// print_r(get_news_id_list());
-	$news_ids = get_news_id_list();
-	print_r($news_ids);
 	$where_in = implode(',', $news_ids);
-	$news_list = $wpdb->get_results("SELECT ID, post_title FROM wp_posts WHERE post_status = 'publish' AND ID IN ($where_in)",ARRAY_A);
-	// print_r($news_list);
+	$_news_list = $wpdb->get_results("SELECT ID, post_title FROM wp_posts WHERE post_status = 'publish' AND ID IN ($where_in) ORDER BY post_date DESC",ARRAY_A);
+	$custom_order = $wpdb->get_col("SELECT option_value FROM wp_options WHERE option_name = 'custom_order'");
+	foreach($_news_list as $v) {
+		$news_list[$v['ID']] = $v;
+	}
 	echo '<form action="" method="post">';
-	echo '表示件数<input type="text" name="sort[\'limit\']" />';
-	echo '<ul class="sortable">';
-	foreach($news_list as $v){
-		// echo $v['ID'];
-		echo '<li style="width:80%; padding: 10px 10px 10px 10px; background-color:#fff;" id="' . $v['ID'] . '">' . $v['post_title'];
+	echo '表示件数<input type="text" name="sort[limit]" />';
+	echo '<button id="submit">submit</button>';
 
+	echo '<ul class="sortable">';
+	if($custom_order != null){
+		$ary_custom_order = json_decode($custom_order[0], true);
+		foreach($ary_custom_order as $id) {
+			echo '<li style="width:80%; padding: 10px 10px 10px 10px; background-color:#FFB;" id="' . $id . '">(' . get_artist_by_taxonomy()[$ids_by_artist[$id]] . ')' . $news_list[$id]['post_title'] . $id;
+			echo '</li>';
+			unset($news_list[$id]);
+		}
+	}
+	foreach($news_list as $v){
+		echo '<li style="width:80%; padding: 10px 10px 10px 10px; background-color:#FFF;" id="' . $v['ID'] . '">(' . get_artist_by_taxonomy()[$ids_by_artist[$v['ID']]] . ')' . $v['post_title'] . $v['ID'];
 		echo '</li>';
 	}
-	echo '<input type="hidden" id="result" name="sort[\'result\']" />';
-    echo '<button id="submit">submit</button>';
-
 	echo '</ul>';
+	echo '<input type="hidden" id="result" name="sort[result]" />';
+
 	echo '</form>';
 
 
