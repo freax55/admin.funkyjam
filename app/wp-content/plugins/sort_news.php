@@ -40,14 +40,16 @@ function get_news_terms(){
 
 function get_news_id_list() {
 	global $wpdb;
-	$news_terms = $wpdb->get_col("SELECT `Term`.`term_id` FROM `wp_funkyjam`.`wp_terms` AS `Term` WHERE `Term`.`name` LIKE '%news'");
+	// $news_terms = $wpdb->get_col("SELECT `Term`.`term_id` FROM `wp_funkyjam`.`wp_terms` AS `Term` WHERE `Term`.`name` LIKE '%news'");
+	$news_terms = $wpdb->get_col("SELECT term_id FROM wp_terms WHERE name LIKE '%news'");
+	
 	// $n = 
 	var_dump($news_terms);
 	// $news_terms = array(4,8,12,16);
 	$where_in = implode(',', $news_terms);
 	var_dump($where_in);
 	// $order_option = $wpdb->get_col("SELECT `Option`")
-	$news_ids = $wpdb->get_col("SELECT `TermRelationship`.`object_id` FROM `wp_funkyjam`.`wp_term_relationships` AS `TermRelationship` WHERE `TermRelationship`.`term_taxonomy_id` IN ($where_in)");
+	$news_ids = $wpdb->get_col("SELECT object_id FROM wp_term_relationships WHERE term_taxonomy_id IN ($where_in)");
 
 	// $news_ids = $wpdb->get_col($wpdb->prepare("SELECT `TermRelationship`.`object_id` FROM `wp_funkyjam`.`wp_term_relationships` AS `TermRelationship` WHERE `TermRelationship`.`term_taxonomy_id` IN (%s)", $news_terms));
 	// $inClause = substr(str_repeat(',?', count($news_terms)), 1);
@@ -87,7 +89,7 @@ function sort_news_top() {
 	$news_ids = get_news_id_list();
 	print_r($news_ids);
 	$where_in = implode(',', $news_ids);
-	$news_list = $wpdb->get_results("SELECT `Post`.`ID`, `Post`.`post_title` FROM `wp_funkyjam`.`wp_posts` AS `Post` WHERE `post_status` = 'publish' AND `ID` IN ($where_in)",ARRAY_A);
+	$news_list = $wpdb->get_results("SELECT ID, post_title FROM wp_posts WHERE post_status = 'publish' AND ID IN ($where_in)",ARRAY_A);
 	// print_r($news_list);
 	echo '<form action="" method="post">';
 	echo '表示件数<input type="text" name="sort[\'limit\']" />';
