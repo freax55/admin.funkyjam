@@ -79,7 +79,7 @@ function get_news_id_list() {
  }
 
  function get_artist_by_taxonomy() {
- 	return array(4=>'久保田利伸', 8=>'浦島りんこ', 12=>'森大輔', 16=>'BES');
+ 	return array(4=>'久保田利伸', 8=>'浦島りんこ', 12=>'森大輔', 16=>'BES',29=>'バナー');
  }
 
 function sort_news_top() {
