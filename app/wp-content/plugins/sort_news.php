@@ -105,7 +105,7 @@ function sort_news_top() {
 		$ids_by_artist[$v['object_id']] = $v['term_taxonomy_id'];
 	}
 	$where_in = implode(',', $news_ids);
-	$_news_list = $wpdb->get_results("SELECT ID, post_title FROM wp_posts WHERE post_status = 'publish' AND ID IN ($where_in) ORDER BY post_date DESC",ARRAY_A);
+	$_news_list = $wpdb->get_results("SELECT ID, post_title FROM wp_posts WHERE post_status = 'publish' AND ID IN ($where_in) ORDER BY post_date ASC",ARRAY_A);
 	$custom_order = $wpdb->get_col("SELECT option_value FROM wp_options WHERE option_name = 'custom_order'");
 	foreach($_news_list as $v) {
 		$news_list[$v['ID']] = $v;
