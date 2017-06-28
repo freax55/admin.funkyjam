@@ -5639,6 +5639,7 @@ function wp_cache_get_last_changed( $group ) {
 	return $last_changed;
 }
 
+
 function remove_menus () {
     global $menu;
     // unset($menu[2]);  // ダッシュボード
@@ -5649,15 +5650,41 @@ function remove_menus () {
     // unset($menu[20]); // ページ
     unset($menu[25]); // コメント
     // unset($menu[59]); // メニューの線2
-    unset($menu[60]); // テーマ
+    // unset($menu[60]); // テーマ
     // unset($menu[65]); // プラグイン
     // unset($menu[70]); // プロフィール
     unset($menu[75]); // ツール
     // unset($menu[80]); // 設定
     // unset($menu[90]); // メニューの線3
+
+    global $submenu;
+    // var_dump($submenu);
+    // unset($submenu['themes.php'][5]);
+    unset($submenu['themes.php'][6]);
+    unset($submenu['themes.php'][7]);
+    unset($submenu['themes.php'][10]);
+
+    unset($submenu['options-general.php'][15]);
+    unset($submenu['options-general.php'][20]);
+    unset($submenu['options-general.php'][25]);
+    unset($submenu['options-general.php'][30]);
+    unset($submenu['options-general.php'][40]);
+    // unset($submenu['themes.php'][]);
+    // unset($submenu['themes.php'][]);
+    // unset($submenu['themes.php'][]);
 }
 add_action('admin_menu', 'remove_menus');
- 
+//管理画面下部のバージョン番号を削除
+function remove_footer_version() {
+	remove_filter( 'update_footer', 'core_update_footer' );
+}
+add_action( 'admin_menu', 'remove_footer_version' );
+//管理画面の「Wordpressのご利用ありがとうございます。」の文言を削除
+add_filter('admin_footer_text', '__return_empty_string');
+function update_nag_hide() {
+    remove_action( 'admin_notices', 'update_nag', 3 );
+}
+add_action( 'admin_init', 'update_nag_hide' );
 // function artist_add_pages () {
 //   add_menu_page('テストタイトル', 'アーティスト', 7, 'index2.php', 'test_page', null, 5);
 //   add_submenu_page('index2.php', 'テストタイトルサブ', 'kubota', 7, 'index3.php', 'test_page');
@@ -5670,18 +5697,4 @@ add_action('admin_menu', 'remove_menus');
 //     echo '<h2>メニュー追加テストページ</h2>';
 // }
 // add_action ( 'admin_menu', 'artist_add_pages' );
-
-
-
-// function fj_news_sort() {
-// 	add_menu_page('トップページニュース並び替え', 'sort_news(top)', 7, 'sort_news.php', 'sort_news_top', null, 2000);
-
-// }
-
-// function sort_news_top() {
-// 	echo '<h2>トップページニュース並び替え</h2>';
-// }
-// add_action('admin_menu', 'fj_news_sort');
-
-
 

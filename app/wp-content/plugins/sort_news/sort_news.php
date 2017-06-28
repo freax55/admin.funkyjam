@@ -61,7 +61,7 @@ if (isset($_POST['sort'])){
 }
 
 function fj_news_sort() {
-	add_menu_page('トップページニュース並び替え', 'sort_news(top)', 7, 'sort_news.php', 'sort_news_top', null, 2000);
+	add_menu_page('トップページニュース並び替え', 'トップニュース並び替え', 7, 'sort_news.php', 'sort_news_top', null, 30);
 
 }
 
