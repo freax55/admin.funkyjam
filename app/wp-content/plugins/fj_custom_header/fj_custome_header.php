@@ -151,10 +151,6 @@ function fj_custom_header_artist() {
 	$data_image = get_header_image_by_id($media_id);
 	$img_src = (empty($data_image))?'':'<img src="' . $data_image[0]['guid'] . '" alt="">';
 	$img_id = (empty($data_image))?'':$data_image[0]['ID'];
-	// var_dump($media_id);
-
-	// var_dump($data_image);
-	// var_dump($img_src);
 	if(!empty($_POST)){
 		var_dump($_POST);
 		global $wpdb;
@@ -167,7 +163,10 @@ function fj_custom_header_artist() {
 				'option_id' => $exist_media_id,
 			)
 		);
-
+		$media_id = @get_artist_header_id($artist)[0]['option_value'];
+		$data_image = get_header_image_by_id($media_id);
+		$img_src = (empty($data_image))?'':'<img src="' . $data_image[0]['guid'] . '" alt="">';
+		$img_id = (empty($data_image))?'':$data_image[0]['ID'];
 	}
 	echo '<form method="post">';
 ?>
@@ -177,27 +176,7 @@ function fj_custom_header_artist() {
 	<input type="submit" value="更新" />
 	<div id="media"><?= $img_src ?></div>
 <?php
-	// echo '<div class="imgInput">';			
-	// echo '<input type="file" name="' . $artist .'" style="padding:10px;"><br>';
-	// 		// echo '<select name="news_id">';
-	// 		// foreach($news_list as $vn) {
-	// 		// 	echo '<option value="' . $vn['ID'] . '">' . $vn['post_title'] . '</option>';
-	// 		// }
-	// 		// echo '</select>';
-	// 	echo '<img src="img/noimage.png" alt="" class="imgView"></div><!--/.imgInput-->';
-	// 	echo '<input type="submit" value="upload">';
-	// 	// echo '<button id="submit_' . $artist . '">保存</button>';
 	echo '</form>';
-		// } else {
-		// 	echo '<h4>/artist/' . $v . '</h4>';
-		// 	echo '<form action="" method="post">';
-		// 	echo '<div class="imgInput">';
-		// 	echo '<input type="file" name="' . $v .'">';
-		// 	echo '<button id="submit' . $k . '">保存</button><br>';
-		// 	echo '<img src="img/noimage.png" alt="" class="imgView"></div><!--/.imgInput-->';
-		// 	echo '</form>';
-		// }
-	// script_upload_preview();
 	script_custom_uploader();
 }
 
