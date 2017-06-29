@@ -43,7 +43,7 @@ if (isset($_POST['sort'])){
 				'autoload' => 'no'
 			)
 		);
-		echo '1';
+		// echo '1';
 	} else {
 		$order_option_id = $custom_order_exist_id[0];
 		$wpdb->update(
@@ -55,8 +55,8 @@ if (isset($_POST['sort'])){
 				'option_id' => $order_option_id,
 			)
 		);
-		echo '0';
-		$wpdb->print_error();	
+		// echo '0';
+		$wpdb->print_error();
 	}
 }
 

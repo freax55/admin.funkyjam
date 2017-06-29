@@ -5650,7 +5650,7 @@ function remove_menus () {
     // unset($menu[20]); // ページ
     unset($menu[25]); // コメント
     // unset($menu[59]); // メニューの線2
-    // unset($menu[60]); // テーマ
+    unset($menu[60]); // テーマ
     // unset($menu[65]); // プラグイン
     // unset($menu[70]); // プロフィール
     unset($menu[75]); // ツール
@@ -5659,10 +5659,14 @@ function remove_menus () {
 
     global $submenu;
     // var_dump($submenu);
-    // unset($submenu['themes.php'][5]);
+    unset($submenu['themes.php'][5]);
     unset($submenu['themes.php'][6]);
     unset($submenu['themes.php'][7]);
     unset($submenu['themes.php'][10]);
+    unset($submenu['themes.php'][8]);
+    unset($submenu['themes.php'][15]);
+    unset($submenu['themes.php'][20]);
+    // unset($submenu['themes.php'][10]);
 
     unset($submenu['options-general.php'][15]);
     unset($submenu['options-general.php'][20]);
@@ -5685,6 +5689,12 @@ function update_nag_hide() {
     remove_action( 'admin_notices', 'update_nag', 3 );
 }
 add_action( 'admin_init', 'update_nag_hide' );
+add_action( 'admin_init', 'redirect_dashiboard' );
+function redirect_dashiboard() {
+	if ( '/wp-admin/index.php' == $_SERVER['SCRIPT_NAME'] ) {
+		wp_redirect( admin_url( 'edit.php' ) );
+	}
+}
 // function artist_add_pages () {
 //   add_menu_page('テストタイトル', 'アーティスト', 7, 'index2.php', 'test_page', null, 5);
 //   add_submenu_page('index2.php', 'テストタイトルサブ', 'kubota', 7, 'index3.php', 'test_page');
