@@ -6,54 +6,6 @@ Version:     1.0
 Author:      y.yoshida
 */
 
-// if (isset($_POST['sort'])){
-// 	$n = (empty($_POST['sort']['limit']))?12:$_POST['sort']['limit'];
-
-// 	$array_result_ids = explode(',', $_POST['sort']['result']);
-// 	$i = 0;
-// 	foreach($array_result_ids as $v){
-// 		if($i == $n){
-// 			break;
-// 		}
-// 		$ary_update[] = $v;
-// 		$i++;
-// 	}
-// 	$json_update = json_encode($ary_update);
-// 	global $wpdb;
-// 	$custom_order_exist_id = $wpdb->get_col("SELECT option_id FROM wp_options WHERE option_name = 'custom_order'");
-// 	if($custom_order_exist_id == null) {
-// 		$wpdb->insert(
-// 			'wp_options',
-// 			array(
-// 				'option_name' => 'custom_order',
-// 				'option_value' => $json_update,
-// 				'autoload' => 'no'
-// 			)
-// 		);
-// 		echo '1';
-// 	} else {
-// 		$order_option_id = $custom_order_exist_id[0];
-// 		$wpdb->update(
-// 			'wp_options',
-// 			array(
-// 				'option_value' => $json_update,
-// 			),
-// 			array(
-// 				'option_id' => $order_option_id,
-// 			)
-// 		);
-// 		echo '0';
-// 		$wpdb->print_error();	
-// 	}
-// }
-	// if(isset($_FILE)) {
-	// 	var_dump('test'.$_FILE['tmp_name']);
-	// 	upload_header_image($_FILE);
-	// }
-	// 	if (isset($_POST)){
-	// 	var_dump($_POST);
-	// }
-
 
 function array_artist_data(){
 	return array(
@@ -76,17 +28,73 @@ function array_artist_data(){
 	);
 }
 
+function get_artist_header_id($artist){
+	$option_name = 'header_' . $artist;
+	global $wpdb;
+	$value = $wpdb->get_results("SELECT option_id, option_value FROM wp_options WHERE option_name = '$option_name'", ARRAY_A);
+	return $value;
+}
+
+function get_header_image_by_id($id){
+	// var_dump($id);
+	global $wpdb;
+	$image = $wpdb->get_results("SELECT ID, post_title, guid FROM wp_posts WHERE post_mime_type LIKE 'image/%' AND ID = '$id'", ARRAY_A);
+	return $image;
+}
+
 function fj_custome_header() {
 	add_menu_page('ヘッダー管理', 'ヘッダー管理', 7, 'fj_custome_header.php', 'header_customize', null, 35);
 	$ary_artist = array_artist_data();
 	foreach($ary_artist as $k => $v) {
 		add_submenu_page('fj_custome_header.php', $v['name']. 'ヘッダー管理', $v['param'], 7, 'artist_' . $v['param'],'fj_custom_header_artist');
 	}
+	add_submenu_page('fj_custome_header.php', '固定ページ共通ヘッダー管理', '固定ページ共通', 7, 'pages_header','fj_custom_header_pages');
+
 }
 
-// function fj_ch_preview_upload(){
-
-// }
+function fj_custom_header_pages(){
+	// $pre = 'artist_';
+	// $artist = str_replace($pre, '', strstr($_SERVER['REQUEST_URI'], $pre));
+	echo '<h2>固定ページ共通ヘッダー画像管理</h2>';
+	$exist_media_id = @get_artist_header_id('pages')[0]['option_id'];
+	$media_id = @get_artist_header_id('pages')[0]['option_value'];
+	$data_image = get_header_image_by_id($media_id);
+	$img_src = (empty($data_image))?'':'<img src="' . $data_image[0]['guid'] . '" alt="">';
+	$img_id = (empty($data_image))?'':$data_image[0]['ID'];
+	if(!empty($_POST)){
+		// var_dump($_POST);
+		global $wpdb;
+		$wpdb->update(
+			'wp_options',
+			array(
+				'option_value' => $_POST['mediaid'],
+			),
+			array(
+				'option_id' => $exist_media_id,
+			)
+		);
+		$media_id = @get_artist_header_id('pages')[0]['option_value'];
+		$data_image = get_header_image_by_id($media_id);
+		$img_src = (empty($data_image))?'':'<img src="' . $data_image[0]['guid'] . '" alt="">';
+		$img_id = (empty($data_image))?'':$data_image[0]['ID'];
+		// var_dump(expression)
+	}
+	echo '<form method="post">';
+?>
+	<input name="mediaid" type="hidden" value="<?= $img_id ?>" />
+	<input type="button" name="media" value="選択" />
+	<?php
+	/*
+	<input type="button" name="media-clear" value="クリア" />
+	*/
+	?>
+	<input type="submit" value="更新" />
+	<div id="media"><?= $img_src ?></div>
+<?php
+	echo '</form>';
+	script_custom_uploader();
+	
+}
 
 function fj_ch_list(){
 	return array(
@@ -125,22 +133,6 @@ function get_select_news_list() {
 	return $news_list;
 }
 
-// function get
-function get_artist_header_id($artist){
-	$option_name = 'header_' . $artist;
-	global $wpdb;
-	$value = $wpdb->get_results("SELECT option_id, option_value FROM wp_options WHERE option_name = '$option_name'", ARRAY_A);
-	return $value;
-}
-
-function get_header_image_by_id($id){
-	// var_dump($id);
-	global $wpdb;
-	$image = $wpdb->get_results("SELECT ID, post_title, guid FROM wp_posts WHERE post_mime_type LIKE 'image/%' AND ID = '$id'", ARRAY_A);
-	return $image;
-}
-
-
 function fj_custom_header_artist() {
 
 	$pre = 'artist_';
@@ -172,6 +164,11 @@ function fj_custom_header_artist() {
 ?>
 	<input name="mediaid" type="hidden" value="<?= $img_id ?>" />
 	<input type="button" name="media" value="選択" />
+	<?php
+	/*
+	<input type="button" name="media-clear" value="クリア" />
+	*/
+	?>
 	<input type="submit" value="更新" />
 	<div id="media"><?= $img_src ?></div>
 <?php
