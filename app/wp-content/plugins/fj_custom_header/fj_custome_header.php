@@ -152,7 +152,7 @@ function fj_custom_header_artist() {
 	$img_src = (empty($data_image))?'':'<img src="' . $data_image[0]['guid'] . '" alt="">';
 	$img_id = (empty($data_image))?'':$data_image[0]['ID'];
 	if(!empty($_POST)){
-		var_dump($_POST);
+		// var_dump($_POST);
 		global $wpdb;
 		$wpdb->update(
 			'wp_options',
@@ -172,7 +172,6 @@ function fj_custom_header_artist() {
 ?>
 	<input name="mediaid" type="hidden" value="<?= $img_id ?>" />
 	<input type="button" name="media" value="選択" />
-	<input type="button" name="media-clear" value="クリア" />
 	<input type="submit" value="更新" />
 	<div id="media"><?= $img_src ?></div>
 <?php
