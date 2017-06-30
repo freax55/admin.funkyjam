@@ -249,7 +249,7 @@ function script_custom_uploader(){
 function header_customize(){
 	echo '<h2>トップページヘッダー画像管理</h2>';
 	if(!empty($_POST)){
-		var_dump($_POST);
+		// var_dump($_POST);
 		// $ary = 
 		foreach($_POST as $kp => $vp) {
 			$num = substr($kp, -1);
@@ -259,7 +259,7 @@ function header_customize(){
 				$sort[$num] = empty($vp)?($num+5):$vp;
 			}
 		}
-		var_dump($ary);
+		// var_dump($ary);
 		array_multisort($sort, SORT_ASC, $ary);
 
 		foreach($ary as $va){
@@ -267,7 +267,7 @@ function header_customize(){
 			$update[] = ['news_id' => $va['news_id'], 'mediaid' => $va['mediaid'], 'image' => $image];
 		}
 
-		var_dump($update);
+		// var_dump($update);
 		$target_option = get_artist_header_id('top');
 		global $wpdb;
 		$wpdb->update(
@@ -283,7 +283,7 @@ function header_customize(){
 	$news_list = get_select_news_list();
 
 	$option = get_artist_header_id('top');
-	var_dump($option);
+	// var_dump($option);
 
 	$headers = json_decode($option[0]['option_value'], true);
 	// $ary_headers = [100,200,300,400,500];
