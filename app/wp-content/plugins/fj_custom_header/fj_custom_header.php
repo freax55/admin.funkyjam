@@ -290,7 +290,7 @@ function header_customize(){
 	echo '<form method="post">';
 	foreach ($headers as $k => $v) {
 ?>
-	<div style="padding:10px; border: solid 1px #CCC; border-radius:4px; ;margin-bottom:10px; width:97.5%;">
+	<div style="padding:10px; border: solid 1px #CCC; border-radius:4px; ;margin-bottom:30px; width:40%;">
 	<input name="mediaid<?= $k ?>" type="hidden" value="<?= $v['mediaid'] ?>" />
 	<input type="button" name="media<?= $k ?>" value="選択"/>
 
