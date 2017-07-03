@@ -295,12 +295,12 @@ function header_customize(){
 	<input type="button" name="media<?= $k ?>" value="選択"/>
 
 	<?php
-	echo '<select name="news_id' . $k . '">';
+	echo '<select name="news_id' . $k . '" style="width:95%;">';
 	foreach($news_list as $vn) {
 		echo '<option value="' . $vn['ID'] . '"' . (($vn['ID'] == $v['news_id'])?' selected':'') . '>' . $vn['post_title'] . '</option>';
 	}
 	echo '</select>';
-	echo '<input type="number" name="sort' . $k .'" min="1" max="5"><br>';
+	echo '<input type="number" name="sort' . $k .'" min="1" max="5" style="margin-bottom:5px;"><br>';
 
 	/*
 	<input type="button" name="media-clear" value="クリア" />
