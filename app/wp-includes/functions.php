@@ -5640,6 +5640,43 @@ function wp_cache_get_last_changed( $group ) {
 }
 
 
+// require(ABSPATH . 'wp-admin/menu.php');
+// if (!current_user_can('edit_users')) {
+function remove_extra_meta_boxes() {
+	$ary = [
+		'kubota',
+		'urashima',
+		'mori',
+		'bes'
+	];
+	// remove_meta_box( 'categorydiv','post','side'); /* 投稿のカテゴリーフィールド */
+	// remove_meta_box( 'postcustom' , 'post' , 'normal' ); /* 投稿のカスタムフィールド */
+	// remove_meta_box( 'postcustom' , 'page' , 'normal' ); /* 固定ページのカスタムフィールド */
+	remove_meta_box( 'postexcerpt' , 'post' , 'normal' ); /* 投稿の抜粋 */
+	remove_meta_box( 'postexcerpt' , 'page' , 'normal' ); /* 固定ページの抜粋 */
+	remove_meta_box( 'commentsdiv' , 'post' , 'normal' ); /* 投稿のコメント */
+	remove_meta_box( 'commentsdiv' , 'page' , 'normal' ); /* 固定ページのコメント */
+	// remove_meta_box( 'tagsdiv-post_tag' , 'post' , 'side' ); /* 投稿のタグ */
+	// remove_meta_box( 'tagsdiv-post_tag' , 'page' , 'side' ); /* 固定ページのタグ */
+	remove_meta_box( 'trackbacksdiv' , 'post' , 'normal' ); /* 投稿のトラックバック */
+	remove_meta_box( 'trackbacksdiv' , 'page' , 'normal' ); /* 固定ページのトラックバック */
+	foreach ($ary as $v) {
+		remove_meta_box( 'commentstatusdiv' , $v . '_news' , 'normal' );
+		remove_meta_box( 'commentsdiv' , $v . '_news' , 'normal' );
+	}
+	remove_meta_box( 'commentstatusdiv' , 'post' , 'normal' ); /* 投稿のディスカッション */
+	remove_meta_box( 'commentstatusdiv' , 'page' , 'normal' ); /* ページのディスカッション */
+	// remove_meta_box( 'slugdiv','post','normal'); /* 投稿のスラッグ */
+	// remove_meta_box( 'slugdiv','page','normal'); /* 固定ページのスラッグ */
+	// remove_meta_box( 'authordiv','post','normal' ); /* 投稿の作成者 */
+	// remove_meta_box( 'authordiv','page','normal' ); /* 固定ページの作成者 */
+	// remove_meta_box( 'revisionsdiv','post','normal' ); /* 投稿のリビジョン */
+	// remove_meta_box( 'revisionsdiv','page','normal' ); /* 固定ページのリビジョン */
+	// remove_meta_box( 'pageparentdiv','page','side'); /* 固定ページのページ属性 */
+}
+add_action( 'admin_menu' , 'remove_extra_meta_boxes' );
+// }
+
 function remove_menus () {
     global $menu;
     // unset($menu[2]);  // ダッシュボード
@@ -5695,6 +5732,54 @@ function redirect_dashiboard() {
 		wp_redirect( admin_url( 'edit.php' ) );
 	}
 }
+
+add_action( 'init', 'my_post_type' );
+function my_post_type() {
+  register_post_type(
+    'kubota_news',
+    array(
+      'label' => 'ニュース/kubota',
+      'public' => true,
+      'hierarchical' => true,
+      'has_archive' => true,
+      'menu_position' => 5,
+      'supports' => array('title', 'editor', 'thumbnail')
+    )
+  );
+  register_post_type(
+    'urashima_news',
+    array(
+      'label' => 'ニュース/urashima',
+      'public' => true,
+      'hierarchical' => true,
+      'has_archive' => true,
+      'menu_position' => 7,
+      'supports' => array('title', 'editor', 'thumbnail')
+    )
+  );
+  register_post_type(
+    'mori_news',
+    array(
+      'label' => 'ニュース/mori',
+      'public' => true,
+      'hierarchical' => true,
+      'has_archive' => true,
+      'menu_position' => 8,
+      'supports' => array('title', 'editor', 'thumbnail')
+    )
+  );
+  register_post_type(
+    'bes_news',
+    array(
+      'label' => 'ニュース/bes',
+      'public' => true,
+      'hierarchical' => true,
+      'has_archive' => true,
+      'menu_position' => 8,
+      'supports' => array('title', 'editor', 'thumbnail')
+    )
+  );
+}
 // function artist_add_pages () {
 //   add_menu_page('テストタイトル', 'アーティスト', 7, 'index2.php', 'test_page', null, 5);
 //   add_submenu_page('index2.php', 'テストタイトルサブ', 'kubota', 7, 'index3.php', 'test_page');
@@ -5706,5 +5791,4 @@ function redirect_dashiboard() {
 // function test_page() {
 //     echo '<h2>メニュー追加テストページ</h2>';
 // }
-// add_action ( 'admin_menu', 'artist_add_pages' );
 
