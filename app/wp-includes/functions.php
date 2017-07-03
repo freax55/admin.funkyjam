@@ -5779,6 +5779,18 @@ function my_post_type() {
       'supports' => array('title', 'editor', 'thumbnail')
     )
   );
+  register_post_type(
+    'extend_news',
+    array(
+      'label' => '特殊バナーリンク',
+      'public' => true,
+      'hierarchical' => true,
+      'has_archive' => true,
+      'menu_position' => 9,
+      'supports' => array('title', 'editor', 'thumbnail')
+    )
+  );
+
 }
 // function artist_add_pages () {
 //   add_menu_page('テストタイトル', 'アーティスト', 7, 'index2.php', 'test_page', null, 5);
