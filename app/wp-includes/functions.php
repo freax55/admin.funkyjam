@@ -5656,8 +5656,8 @@ function remove_extra_meta_boxes() {
 	remove_meta_box( 'postexcerpt' , 'page' , 'normal' ); /* 固定ページの抜粋 */
 	remove_meta_box( 'commentsdiv' , 'post' , 'normal' ); /* 投稿のコメント */
 	remove_meta_box( 'commentsdiv' , 'page' , 'normal' ); /* 固定ページのコメント */
-	// remove_meta_box( 'tagsdiv-post_tag' , 'post' , 'side' ); /* 投稿のタグ */
-	// remove_meta_box( 'tagsdiv-post_tag' , 'page' , 'side' ); /* 固定ページのタグ */
+	remove_meta_box( 'tagsdiv-post_tag' , 'post' , 'side' ); /* 投稿のタグ */
+	remove_meta_box( 'tagsdiv-post_tag' , 'page' , 'side' ); /* 固定ページのタグ */
 	remove_meta_box( 'trackbacksdiv' , 'post' , 'normal' ); /* 投稿のトラックバック */
 	remove_meta_box( 'trackbacksdiv' , 'page' , 'normal' ); /* 固定ページのトラックバック */
 	foreach ($ary as $v) {
@@ -5670,16 +5670,16 @@ function remove_extra_meta_boxes() {
 	// remove_meta_box( 'slugdiv','page','normal'); /* 固定ページのスラッグ */
 	// remove_meta_box( 'authordiv','post','normal' ); /* 投稿の作成者 */
 	// remove_meta_box( 'authordiv','page','normal' ); /* 固定ページの作成者 */
-	// remove_meta_box( 'revisionsdiv','post','normal' ); /* 投稿のリビジョン */
-	// remove_meta_box( 'revisionsdiv','page','normal' ); /* 固定ページのリビジョン */
-	// remove_meta_box( 'pageparentdiv','page','side'); /* 固定ページのページ属性 */
+	remove_meta_box( 'revisionsdiv','post','normal' ); /* 投稿のリビジョン */
+	remove_meta_box( 'revisionsdiv','page','normal' ); /* 固定ページのリビジョン */
+	remove_meta_box( 'pageparentdiv','page','side'); /* 固定ページのページ属性 */
 }
 add_action( 'admin_menu' , 'remove_extra_meta_boxes' );
 // }
 
 function remove_menus () {
     global $menu;
-    // unset($menu[2]);  // ダッシュボード
+    unset($menu[2]);  // ダッシュボード
     // unset($menu[4]);  // メニューの線1
     // unset($menu[5]);  // 投稿
     // unset($menu[10]); // メディア
@@ -5792,15 +5792,3 @@ function my_post_type() {
   );
 
 }
-// function artist_add_pages () {
-//   add_menu_page('テストタイトル', 'アーティスト', 7, 'index2.php', 'test_page', null, 5);
-//   add_submenu_page('index2.php', 'テストタイトルサブ', 'kubota', 7, 'index3.php', 'test_page');
-//   add_submenu_page('index2.php', 'テストタイトルサブ', 'urashima', 7, 'index3.php', 'test_page');
-//   add_submenu_page('index2.php', 'テストタイトルサブ', 'mori', 7, 'index3.php', 'test_page');
-//   add_submenu_page('index2.php', 'テストタイトルサブ', 'bse', 7, 'index3.php', 'test_page');
-// }
- 
-// function test_page() {
-//     echo '<h2>メニュー追加テストページ</h2>';
-// }
-
