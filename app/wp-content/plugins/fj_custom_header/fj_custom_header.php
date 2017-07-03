@@ -94,32 +94,32 @@ function fj_custom_header_pages(){
 	
 }
 
-function fj_ch_list(){
-	return array(
-		'file1',
-		'file2',
-		'file3',
-		'file4',
-		'file5',
-		'kubota',
-		'urashima',
-		'mori',
-		'bes'
-	);
-}
+// function fj_ch_list(){
+// 	return array(
+// 		'file1',
+// 		'file2',
+// 		'file3',
+// 		'file4',
+// 		'file5',
+// 		'kubota',
+// 		'urashima',
+// 		'mori',
+// 		'bes'
+// 	);
+// }
 
 // data selectBox
 function get_select_news_list() {
 	global $wpdb;
-	$news_terms = $wpdb->get_col("SELECT term_id FROM wp_terms WHERE name LIKE '%news'");
-	$_where_in = implode(',', $news_terms);
-	$_news_ids = $wpdb->get_results("SELECT object_id , term_taxonomy_id FROM wp_term_relationships WHERE term_taxonomy_id IN ($_where_in) ORDER BY object_id DESC",ARRAY_A);
-	foreach($_news_ids as $v) {
-		$news_ids[] = $v['object_id'];
-		$ids_by_artist[$v['object_id']] = $v['term_taxonomy_id'];
-	}
-	$where_in = implode(',', $news_ids);
-	$news_list = $wpdb->get_results("SELECT ID, post_title FROM wp_posts WHERE post_status = 'publish' AND ID IN ($where_in) ORDER BY post_date DESC",ARRAY_A);
+	// $news_terms = $wpdb->get_col("SELECT term_id FROM wp_terms WHERE name LIKE '%news'");
+	// $_where_in = implode(',', $news_terms);
+	// $_news_ids = $wpdb->get_results("SELECT object_id , term_taxonomy_id FROM wp_term_relationships WHERE term_taxonomy_id IN ($_where_in) ORDER BY object_id DESC",ARRAY_A);
+	// foreach($_news_ids as $v) {
+	// 	$news_ids[] = $v['object_id'];
+	// 	$ids_by_artist[$v['object_id']] = $v['term_taxonomy_id'];
+	// }
+	// $where_in = implode(',', $news_ids);
+	$news_list = $wpdb->get_results("SELECT ID, post_title, post_type FROM wp_posts WHERE post_status = 'publish' AND post_type LIKE '%_news' ORDER BY post_date DESC",ARRAY_A);
 
 	return $news_list;
 }
