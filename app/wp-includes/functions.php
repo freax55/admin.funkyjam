@@ -5679,7 +5679,7 @@ add_action( 'admin_menu' , 'remove_extra_meta_boxes' );
 
 function remove_menus () {
     global $menu;
-    unset($menu[2]);  // ダッシュボード
+    // unset($menu[2]);  // ダッシュボード
     // unset($menu[4]);  // メニューの線1
     // unset($menu[5]);  // 投稿
     // unset($menu[10]); // メディア
@@ -5715,6 +5715,7 @@ function remove_menus () {
     // unset($submenu['themes.php'][]);
 }
 add_action('admin_menu', 'remove_menus');
+
 //管理画面下部のバージョン番号を削除
 function remove_footer_version() {
 	remove_filter( 'update_footer', 'core_update_footer' );
@@ -5726,13 +5727,35 @@ function update_nag_hide() {
     remove_action( 'admin_notices', 'update_nag', 3 );
 }
 add_action( 'admin_init', 'update_nag_hide' );
-add_action( 'admin_init', 'redirect_dashiboard' );
-function redirect_dashiboard() {
-	if ( '/wp-admin/index.php' == $_SERVER['SCRIPT_NAME'] ) {
-		wp_redirect( admin_url( 'edit.php' ) );
-	}
-}
+// 管理バーのヘルプメニューを非表示にする
+function my_admin_head(){
+ echo '<style type="text/css">#contextual-help-link-wrap{display:none;}</style>';
+ }
+add_action('admin_head', 'my_admin_head');
+// ダッシュボードウィジェット非表示
+function example_remove_dashboard_widgets() {
+ if (!current_user_can('level_10')) { //level10以下のユーザーの場合ウィジェットをunsetする
+ global $wp_meta_boxes;
+ unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_right_now']); // 現在の状況
+ unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_recent_comments']); // 最近のコメント
+ unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_incoming_links']); // 被リンク
+ unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_plugins']); // プラグイン
+ unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_quick_press']); // クイック投稿
+ unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_recent_drafts']); // 最近の下書き
+ unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_primary']); // WordPressブログ
+ unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_secondary']); // WordPressフォーラム
+ }
+ }
+add_action('wp_dashboard_setup', 'example_remove_dashboard_widgets');
 
+// add_action( 'admin_init', 'redirect_dashiboard' );
+// function redirect_dashiboard() {
+// 	if ( '/wp-admin/index.php' == $_SERVER['SCRIPT_NAME'] ) {
+// 		wp_redirect( admin_url( 'edit.php' ) );
+// 	}
+// }
+
+// ニュース投稿メニュー追加
 add_action( 'init', 'my_post_type' );
 function my_post_type() {
   register_post_type(
