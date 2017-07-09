@@ -318,7 +318,7 @@ function header_customize(){
 function my_admin_scripts() {
     wp_register_script(
         'mediauploader',
-        plugin_dir_url( __FILE__ ) . '/js/mediauploader.js',
+        plugin_dir_url( __FILE__ ) . '/media-uploader.js',
         array( 'jquery' ),
         false,
         true
