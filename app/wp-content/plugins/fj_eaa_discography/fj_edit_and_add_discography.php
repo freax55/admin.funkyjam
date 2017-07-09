@@ -73,14 +73,14 @@ function edit_discograpies() {
 	// var_dump($host);
 	echo '<h2>ディスコグラフィ管理</h2>';
 	foreach (_array_artist_data() as $va) {
-		echo '<h3>' . $va['name'] . '</h3>';
+		echo '<h3 style="margin:20px 0 0 0;">' . $va['name'] . '</h3>';
+		echo '<ul style="margin:0 0 10px 0;">';
 		foreach(get_disc_types()[$va['param']] as $vk => $vt){
-			echo '<h4>' . $vt . '</h4>';
-			echo '<ul>';
-			echo '<li><a href="' . $host . '/discography_data/index/' . $va['param'] . '/' . $vk . '/" target="_blank">編集ページ</a></li>';
-			echo '</ul>';
-
+			echo '<li>';
+			echo '<h4 style="margin:5px 0;">' . $vt . '</h4>';
+			echo '<a href="' . $host . '/discography_data/index/' . $va['param'] . '/' . $vk . '/" target="_blank">編集ページ</a></li>';
 		}
+		echo '</ul>';
 	}
 	// echo '<script>';
 	// echo 'jQuery(function($){
