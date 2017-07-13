@@ -3,7 +3,7 @@
 Plugin Name: fj Customize Header
 Description: ヘッダー管理
 Version:     1.0
-Author:      y.yoshida
+Author:      y.y. untamed,Inc.
 */
 
 

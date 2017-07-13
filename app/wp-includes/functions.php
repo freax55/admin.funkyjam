@@ -5687,7 +5687,7 @@ function remove_menus () {
     // unset($menu[20]); // ページ
     unset($menu[25]); // コメント
     // unset($menu[59]); // メニューの線2
-    unset($menu[60]); // テーマ
+    // unset($menu[60]); // テーマ
     // unset($menu[65]); // プラグイン
     // unset($menu[70]); // プロフィール
     unset($menu[75]); // ツール

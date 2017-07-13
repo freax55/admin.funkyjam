@@ -3,7 +3,7 @@
 Plugin Name: sort News
 Description: ニュース並び替え
 Version:     1.0
-Author:      y.yoshida
+Author:      y.y. untamed,Inc.
 */
 
 if (isset($_POST['sort'])){
