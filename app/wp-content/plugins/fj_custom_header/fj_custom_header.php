@@ -111,14 +111,6 @@ function fj_custom_header_pages(){
 // data selectBox
 function get_select_news_list() {
 	global $wpdb;
-	// $news_terms = $wpdb->get_col("SELECT term_id FROM wp_terms WHERE name LIKE '%news'");
-	// $_where_in = implode(',', $news_terms);
-	// $_news_ids = $wpdb->get_results("SELECT object_id , term_taxonomy_id FROM wp_term_relationships WHERE term_taxonomy_id IN ($_where_in) ORDER BY object_id DESC",ARRAY_A);
-	// foreach($_news_ids as $v) {
-	// 	$news_ids[] = $v['object_id'];
-	// 	$ids_by_artist[$v['object_id']] = $v['term_taxonomy_id'];
-	// }
-	// $where_in = implode(',', $news_ids);
 	$news_list = $wpdb->get_results("SELECT ID, post_title, post_type FROM wp_posts WHERE post_status = 'publish' AND post_type LIKE '%_news' ORDER BY post_date DESC",ARRAY_A);
 
 	return $news_list;
@@ -330,26 +322,3 @@ function my_admin_scripts() {
 }
 add_action( 'admin_print_scripts', 'my_admin_scripts' );
 add_action('admin_menu', 'fj_custom_header');
-// function get_header_image_path(){
-// 	global $wpdb;
-// 	$path = $wpdb->get_col("SELECT option_value FROM wp_options WHERE option_name = 'header_image_upload_path'");
-// 	return $path;
-// }
-
-// function upload_header_image($file) {
-// 	$upload_dir = get_header_image_path();
-// 	$file_name = $file['kubota']["name"];
-// 	$file_tmp  = $file['kubota']["tmp_name"];
-// 	$file_ext  = '.' . substr($file_name, strrpos($file_name, '.') + 1);
-
-// 	if (!strstr($file_name, ".gif") || !strstr($file_name, ".jpg") || !strstr($file_name, ".jpeg") || !strstr($file_name, ".png")) {
-// 		return;
-// 	}
-// 	var_dump($upload_dir . $file_name);
-// 	if (move_uploaded_file($file_tmp, $upload_dir . $file_name)) {
-// 		return true;
-// 	} else {
-// 		return false;
-// 	}
-// }
-

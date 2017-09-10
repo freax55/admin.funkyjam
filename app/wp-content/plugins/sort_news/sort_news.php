@@ -52,11 +52,6 @@ function fj_news_sort() {
 
 }
 
-// function get_news_terms(){
-// 	global $wpdb;
-// 	return $wpdb->get_col("SELECT `Term`.`term_id` FROM `wp_funkyjam`.`wp_terms` AS `Term` WHERE `Term`.`name` LIKE '%news'");
-// }
-
 function get_ary_post_types(){
 	return array(
 		'久保田利伸' => 'kubota_news',
@@ -97,15 +92,7 @@ function sort_news_top() {
 	</script>';
 	global $wpdb;
 	echo '<h2>トップページニュース並び替え</h2>';
-	// $_news_ids = get_news_id_list();
-	// foreach($_news_ids as $v) {
-	// 	$news_ids[] = $v['object_id'];
-	// 	$ids_by_artist[$v['object_id']] = $v['term_taxonomy_id'];
-	// }
-	// $where_in = implode(',', $news_ids);
 	$where_in = get_news_by_post_types();
-	// var_dump($where_in);
-	// $_news_list = $wpdb->get_results("SELECT ID, post_title FROM wp_posts WHERE post_status = 'publish' AND ID IN ($where_in) ORDER BY post_date ASC",ARRAY_A);
 	$_news_list = $wpdb->get_results("SELECT ID, post_title, post_type FROM wp_posts WHERE post_status = 'publish' AND post_type LIKE '%_news' ORDER BY post_date ASC",ARRAY_A);
 	// var_dump($_news_list);
 	$custom_order = $wpdb->get_col("SELECT option_value FROM wp_options WHERE option_name = 'custom_order'");

@@ -61,11 +61,6 @@ function get_publish_url() {
 
 function fj_edit_and_add_discography() {
 	add_menu_page('ディスコグラフィ管理', 'ディスコグラフィ管理', 7, 'fj_edit_and_add_discography.php', 'edit_discograpies', null, 42);
-	// $ary_artist = array_artist_data();
-	// foreach($ary_artist as $k => $v) {
-	// 	add_submenu_page('fj_custom_header.php', $v['name']. 'ヘッダー管理', $v['param'], 7, 'artist_' . $v['param'],'fj_custom_header_artist');
-	// }
-	// add_submenu_page('fj_custom_header.php', '固定ページ共通ヘッダー管理', '固定ページ共通', 7, 'pages_header','fj_custom_header_pages');
 }
 
 function edit_discograpies() {
@@ -82,15 +77,6 @@ function edit_discograpies() {
 		}
 		echo '</ul>';
 	}
-	// echo '<script>';
-	// echo 'jQuery(function($){
-	// 		$(function(href, width, height){
-	// 			window.open(href, "", "width=" + width + ", height=" + height + ", menubar=no, scrollbars=yes");
-	// 		})
-	// 	})';
-	// echo '</script>';
-			// echo '<script src="https://code.jquery.com/jquery-1.8.3.min.js"></script>';
-			// echo '<script src="https://code.jquery.com/ui/1.11.3/jquery-ui.js"></script>';
 
 }
 
